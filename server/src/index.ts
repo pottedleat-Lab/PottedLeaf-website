@@ -9,7 +9,8 @@ import { paymentsRouter, razorpayWebhook } from './routes/payments.js';
 
 const app = express();
 
-app.use(cors({ origin: env.clientUrl.split(',').map((s) => s.trim()) }));
+// CLIENT_URL may list several sites, comma-separated; a trailing "/" is ignored
+app.use(cors({ origin: env.clientUrl.split(',').map((s) => s.trim().replace(/\/+$/, '')).filter(Boolean) }));
 
 // Webhook needs the raw body for signature verification — register before express.json()
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), (req, res, next) => {
