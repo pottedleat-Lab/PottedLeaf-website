@@ -1,121 +1,221 @@
-# thePottedLeaf
+<div align="center">
 
-Online plant & pot store. React frontend (`client/`), TypeScript/Express backend (`server/`), Supabase (DB + auth + storage), Razorpay payments.
+# 🪴 thePottedLeaf
+
+**Online store for plants, pots and gardening tools**
+
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+[![Razorpay](https://img.shields.io/badge/Payments-Razorpay-0C2451?logo=razorpay&logoColor=white)](https://razorpay.com/)
+
+*Shop by category • Google login • UPI QR & card payments • Admin dashboard • Live stock*
+
+**Live site:** https://potted-leaf.vercel.app
+
+</div>
+
+---
+
+## 🎯 Overview
+
+thePottedLeaf is the online shop of **VM Botanicals**, Kanpur. Customers browse plants by category, add them to a cart, and pay with UPI QR, credit card or debit card. The shop owner manages products, stock, orders, gallery photos and vlogs from an admin dashboard. Changes appear on the site straight away.
 
 Full requirements: [REQUIREMENTS.md](REQUIREMENTS.md)
 
+---
+
+## 🏗️ Architecture
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│              Website — React + Vite (Vercel)                 │
+│  Home · Shop · Product · Cart · Checkout · Orders · Vlogs    │
+│  Gallery · Feedback · Policies · Login · Admin dashboard     │
+└───────────────┬───────────────────────────────┬──────────────┘
+                │ login only                    │ all data (REST + JWT)
+                ▼                               ▼
+        ┌───────────────┐            ┌─────────────────────────┐
+        │ Supabase Auth │            │  API — Express + TS     │
+        │ Google, email │            │  (Render)               │
+        └───────────────┘            │  checks role & prices   │
+                                     └──────┬───────────┬──────┘
+                                            │           │
+                                            ▼           ▼
+                              ┌──────────────────┐  ┌──────────────┐
+                              │ Supabase         │  │ Razorpay     │
+                              │ Postgres + RLS   │  │ orders,      │
+                              │ Storage (images) │  │ verification │
+                              └──────────────────┘  └──────────────┘
 ```
-client/    React + Vite + TypeScript (port 5173)
-server/    Express + TypeScript API (port 4000)
-supabase/  schema.sql — tables, RLS, storage buckets, sample products
+
+The browser never talks to the database directly. The API holds the Supabase secret key and the Razorpay secret.
+
+---
+
+## ✨ Features
+
+### 🛒 Shop
+- Products listed by section: Office, Showcase, Flower, Fruit, Vegetable, Pots & Planters, Tools, Seeds
+- Search, sort by price, and an "Only N left" / "Sold out" label based on live stock
+- Cart saved in the browser; guests can browse and shop without an account
+
+### 🔐 Accounts
+- **Continue with Google** or email and password (Supabase Auth)
+- Login required only at checkout; customers return to checkout after logging in
+- My orders page with order status
+
+### 💳 Payments
+- Customer picks **UPI QR**, **Credit card** or **Debit card**; Razorpay shows only that method
+- Total recalculated on the server from database prices (the browser's prices are never trusted)
+- Razorpay signature verified on the server, then stock reduced in a single database transaction
+- If an item sells out during payment, the order is marked failed and refunded automatically
+
+### 🧑‍🌾 Admin dashboard (`/admin`)
+
+| Tab | What it does |
+|---|---|
+| Add product | Photo, name, category, price, quantity, bio → live immediately |
+| Inventory | +/− stock, edit details, change photo, hide/show, delete |
+| Orders | Paid orders with address; mark shipped → delivered |
+| Gallery | Upload several photos with a caption |
+| Vlogs | Add YouTube videos |
+| Feedback | Remove inappropriate reviews |
+
+### 📄 Content & compliance
+- Vlogs, photo gallery and a customer feedback wall
+- Terms, Privacy, Refund & Cancellation, Shipping and Contact pages (needed for Razorpay verification)
+- Business name, GSTIN and contact details in the footer
+
+---
+
+## 🛠️ Technology Stack
+
+| Area | Technology |
+|---|---|
+| Frontend | React 18, TypeScript, Vite, React Router |
+| Backend | Node.js 22, Express, TypeScript, Zod validation |
+| Database & storage | Supabase Postgres (Row Level Security), Supabase Storage |
+| Auth | Supabase Auth (Google OAuth, email/password) |
+| Payments | Razorpay Standard Checkout |
+| Hosting | Vercel (website), Render (API) |
+| Analytics | Vercel Web Analytics (cookie-free) |
+
+---
+
+## 📁 Project Structure
+
+```text
+client/                     # Website (React + Vite)
+ ├── src/pages/             # Home, Shop, Product, Cart, Checkout, Orders, Vlogs, Gallery, Feedback, Policies, Auth
+ ├── src/pages/admin/       # Add product, Inventory, Orders, Gallery, Vlogs, Feedback
+ ├── src/components/        # Layout, ProductCard, Guards (login/admin), Stars
+ ├── src/context/           # AuthContext, CartContext
+ ├── src/lib/               # api.ts (one function per endpoint), categories, contact details
+ └── vercel.json            # Lets page links work on refresh
+server/                     # API (Express + TypeScript)
+ ├── src/routes/            # public.ts, admin.ts, payments.ts
+ ├── src/middleware/        # auth (Supabase token + admin check)
+ └── src/lib/               # Supabase, Razorpay, image upload, env
+supabase/schema.sql         # Tables, security policies, stock function, storage buckets, sample products
+render.yaml                 # Render setup for the API
 ```
 
-## Setup
+---
 
-### 1. Supabase
-1. Create a project at https://supabase.com.
-2. **SQL Editor** → paste and run all of `supabase/schema.sql`. This creates the tables, the stock function, the `product-images` and `gallery` storage buckets, and 16 sample products.
-3. **Project Settings → API**: copy the Project URL, `anon` key and `service_role` key.
-4. (For quick local testing) **Authentication → Providers → Email**: turn off "Confirm email" so new accounts can log in right away.
+## 🚀 Quick Start (local)
 
-### 2. Razorpay
-1. Sign up at https://dashboard.razorpay.com and switch to **Test mode**.
-2. **Settings → API Keys** → generate a key ID and secret.
-3. (Optional) **Settings → Webhooks** → URL `https://<your-server>/api/payments/webhook`, event `payment.captured`, and set a secret.
+### Prerequisites
+- Node.js 22+
+- A Supabase project (run `supabase/schema.sql` once in its SQL Editor)
+- Razorpay **test** keys
 
-### 3. Backend
+### 1) Backend
 ```bash
 cd server
-cp .env.example .env      # fill in Supabase + Razorpay values
+cp .env.example .env      # Supabase URL + secret key, Razorpay key ID + secret
 npm install
 npm run dev               # http://localhost:4000/api/health
 ```
 
-### 4. Frontend
+### 2) Website
 ```bash
 cd client
-cp .env.example .env      # fill in VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+cp .env.example .env      # API URL, Supabase URL + publishable key
 npm install
 npm run dev               # http://localhost:5173
 ```
 
-### 5. Google login
-1. **Google Cloud Console** (https://console.cloud.google.com) → create/select a project.
-2. **APIs & Services → OAuth consent screen**: User type *External*, app name "thePottedLeaf", support email, and add your domain later. Publish the app when going live (in *Testing* only listed test users can sign in).
-3. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type *Web application*:
-   - Authorized JavaScript origins: `http://localhost:5173` (add your Vercel URL later)
-   - Authorized redirect URIs: `https://<your-project-ref>.supabase.co/auth/v1/callback`
-   - Copy the **Client ID** and **Client secret**.
-4. **Supabase → Authentication → Sign In / Providers → Google**: enable, paste Client ID + secret, save.
-5. **Supabase → Authentication → URL Configuration**:
-   - Site URL: `http://localhost:5173` (change to the Vercel URL when deployed)
-   - Redirect URLs: add `http://localhost:5173/**` and, after deploying, `https://<your-vercel-url>/**`
+Test payment: choose **Credit card** and use card `4386 2894 0766 0153`, any future expiry, any CVV and any OTP.
 
-The Google email `thepottedleafs@gmail.com` also gets admin automatically. If the same email already has a password account, Supabase links both logins to one account.
+---
 
-### 6. Admin account
-**thepottedleafs@gmail.com** is the admin. `schema.sql` lists it in the `admin_emails` table, so:
-- if that email signs up after the schema is run, it becomes admin automatically;
-- if it already had an account, running the schema upgrades it to admin.
+## ⚙️ Configuration
 
-Log in with that email and an **Admin** link appears in the menu (`/admin`). If you were already logged in, log out and back in.
+| Variable | Where | Value |
+|---|---|---|
+| `SUPABASE_URL` | server | `https://<project>.supabase.co` (no `/rest/v1`) |
+| `SUPABASE_SERVICE_ROLE_KEY` | server | Supabase **secret** key (`sb_secret_…`) |
+| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | server | Razorpay API keys |
+| `CLIENT_URL` | server | Website URL(s), comma-separated |
+| `VITE_API_URL` | client | API URL |
+| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | client | Supabase URL + **publishable** key (`sb_publishable_…`) |
 
-To add another admin later, run in the Supabase SQL Editor:
+Secrets go only in `server/.env` or in Render's environment settings, never in the website code or in git.
+
+<details>
+<summary><b>Google login setup</b></summary>
+
+1. Google Cloud Console → **OAuth consent screen**: External, app name "thePottedLeaf". Publish it when going live.
+2. **Credentials → OAuth client ID → Web application**
+   - JavaScript origins: `http://localhost:5173`, `https://potted-leaf.vercel.app`
+   - Redirect URI: `https://<project>.supabase.co/auth/v1/callback`
+3. Supabase → Authentication → Providers → **Google**: paste the client ID and secret.
+4. Supabase → Authentication → URL Configuration: Site URL = live site; Redirect URLs = `https://potted-leaf.vercel.app/**` and `http://localhost:5173/**`.
+</details>
+
+<details>
+<summary><b>Admin access</b></summary>
+
+**thepottedleafs@gmail.com** becomes admin automatically when it signs up (it's listed in the `admin_emails` table). To add another admin:
+
 ```sql
-insert into public.admin_emails (email) values ('another@example.com');
--- and if that person already has an account:
+insert into public.admin_emails (email) values ('someone@example.com');
 update public.profiles set role = 'admin'
-where id = (select id from auth.users where lower(email) = lower('another@example.com'));
+where id = (select id from auth.users where lower(email) = lower('someone@example.com'));
 ```
+</details>
 
-## Admin dashboard
-| Tab | What it does |
+<details>
+<summary><b>Deployment (Vercel + Render)</b></summary>
+
+1. **Render:** New → Blueprint → this repo (reads `render.yaml`). Add the server variables above. Check `/api/health` shows `{"ok":true}`.
+2. **Vercel:** import the repo with Root Directory `client`, and add the client variables.
+3. Set `CLIENT_URL` on Render to the Vercel URL.
+
+Every push to `main` redeploys both. Render's free plan sleeps when nobody has visited for 15 minutes; the Starter plan stays awake.
+
+**Going live with payments:** after Razorpay approves your KYC, replace the test keys on Render with live keys.
+</details>
+
+---
+
+## 🔐 Security
+
+| Concern | How it's handled |
 |---|---|
-| Add product | Picture + name + category + cost + quantity + bio → uploaded to Supabase and live immediately |
-| Inventory | +/− or type a quantity, edit price/name/category/bio, change the picture, hide/show, delete |
-| Orders | All paid orders with address; mark shipped / delivered |
-| Gallery | Upload multiple photos with a caption, delete photos |
-| Vlogs | Add a YouTube link with title and description, delete |
-| Feedback | Remove inappropriate feedback |
+| Prices | Recalculated on the server from the database at checkout |
+| Payment fraud | Razorpay HMAC-SHA256 signature checked on the server |
+| Stock | Reduced atomically in a Postgres function; overselling is refunded |
+| Admin actions | Role checked on the server for every admin request |
+| Data access | Row Level Security on every table; secret keys only on the server |
+| Input | Validated with Zod on the server (phone, pincode, prices, uploads) |
 
-## Payments
-At checkout the customer picks **UPI QR**, **Credit card** or **Debit card**; Razorpay Checkout then shows only that method. The backend:
-1. recalculates the total from database prices and checks stock (`/api/payments/create-order`),
-2. verifies Razorpay's signature (`/api/payments/verify`),
-3. marks the order paid and reduces stock in one database transaction. If an item sold out in the meantime, the order is marked failed and the payment is refunded automatically.
+---
 
-Test cards: https://razorpay.com/docs/payments/payments/test-card-details/
+<div align="center">
 
-## Hosting
+**thePottedLeaf** · a unit of VM Botanicals, Kanpur
 
-| Part | Platform |
-|---|---|
-| Frontend (`client/`) | Vercel |
-| Backend (`server/`) | Render (`render.yaml` is included) |
-| Database, auth, images | Supabase (already hosted) |
-
-Push the project to a GitHub repository first. Both platforms deploy from GitHub and redeploy on every push.
-
-### 1. Backend on Render
-1. https://render.com → **New → Blueprint** → choose the repo. Render reads `render.yaml`.
-2. Fill in the environment variables it asks for (same values as `server/.env`). For `CLIENT_URL`, enter a placeholder for now; you'll set it in step 3.
-3. Deploy, then copy the URL (e.g. `https://pottedleaf-api.onrender.com`). Check `…/api/health` shows `{"ok":true}`.
-
-The free plan sleeps after 15 minutes without visits, so the first request after that takes about a minute. The Starter plan ($7/month) stays awake, which is better for a live shop.
-
-### 2. Frontend on Vercel
-1. https://vercel.com → **Add New → Project** → import the repo.
-2. **Root Directory:** `client`. Vercel detects Vite automatically.
-3. Environment variables:
-   - `VITE_API_URL` = your Render URL (no trailing slash)
-   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
-4. Deploy. `client/vercel.json` makes page links like `/shop/pots` work on refresh.
-
-### 3. Connect them
-- On Render, set `CLIENT_URL` to your Vercel URL (e.g. `https://pottedleaf.vercel.app`; separate several with commas if you add a custom domain) and redeploy.
-- In Supabase → **Authentication → URL Configuration**, set **Site URL** to your Vercel URL so signup confirmation emails link to the live site.
-- Razorpay webhook (optional): `https://<render-url>/api/payments/webhook`.
-- When you go live, swap the Razorpay test keys for live keys on Render (Razorpay needs your business KYC first).
-
-### Custom domain
-Buy a domain (e.g. from GoDaddy or Namecheap), add it in Vercel → Project → **Domains**, and add it to `CLIENT_URL` on Render.
+</div>
