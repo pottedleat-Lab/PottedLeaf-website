@@ -1,4 +1,4 @@
-# PottedLeaf
+# thePottedLeaf
 
 Online plant & pot store. React frontend (`client/`), TypeScript/Express backend (`server/`), Supabase (DB + auth + storage), Razorpay payments.
 
@@ -41,7 +41,7 @@ npm run dev               # http://localhost:5173
 
 ### 5. Google login
 1. **Google Cloud Console** (https://console.cloud.google.com) → create/select a project.
-2. **APIs & Services → OAuth consent screen**: User type *External*, app name "PottedLeaf", support email, and add your domain later. Publish the app when going live (in *Testing* only listed test users can sign in).
+2. **APIs & Services → OAuth consent screen**: User type *External*, app name "thePottedLeaf", support email, and add your domain later. Publish the app when going live (in *Testing* only listed test users can sign in).
 3. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type *Web application*:
    - Authorized JavaScript origins: `http://localhost:5173` (add your Vercel URL later)
    - Authorized redirect URIs: `https://<your-project-ref>.supabase.co/auth/v1/callback`

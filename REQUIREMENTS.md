@@ -1,8 +1,8 @@
-# PottedLeaf — Product Requirements
+# thePottedLeaf — Product Requirements
 
 An online store for plants, pots and gardening tools. Multi-page web app with customer accounts, an admin back-office, Supabase as database/auth/storage, and Razorpay for payments.
 
-> Reference site for the business domain: https://www.urvann.com/ — PottedLeaf uses its own design and is **not** a copy.
+> Reference site for the business domain: https://www.urvann.com/ — thePottedLeaf uses its own design and is **not** a copy.
 
 ---
 

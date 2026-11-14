@@ -35,7 +35,7 @@ export function Terms() {
   return (
     <PolicyPage title="Terms & Conditions">
       <p>
-        Welcome to PottedLeaf. By using this website and placing an order you agree to these terms. "We", "us" and
+        Welcome to thePottedLeaf. By using this website and placing an order you agree to these terms. "We", "us" and
         "our" refer to {CONTACT.business}; "you" refers to the customer.
       </p>
       <h3>1. Products</h3>

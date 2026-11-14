@@ -45,5 +45,5 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.listen(env.port, () => {
-  console.log(`PottedLeaf API running on http://localhost:${env.port}`);
+  console.log(`thePottedLeaf API running on http://localhost:${env.port}`);
 });

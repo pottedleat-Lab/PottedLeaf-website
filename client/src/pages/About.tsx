@@ -7,7 +7,7 @@ export default function About() {
       <span className="eyebrow">Our story</span>
       <h1>Plants grown with patience, delivered with care.</h1>
       <p>
-        PottedLeaf started as a small backyard nursery and grew into a home for hundreds of plant varieties, handcrafted
+        thePottedLeaf started as a small backyard nursery and grew into a home for hundreds of plant varieties, handcrafted
         pots and the tools that help them thrive. Every plant is nursery-raised, hardened for home conditions and checked
         by hand before it's packed.
       </p>

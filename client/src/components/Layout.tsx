@@ -34,7 +34,7 @@ export function Layout() {
           </button>
           <Link to="/" className="brand">
             <Logo />
-            <span>PottedLeaf</span>
+            <span>thePottedLeaf</span>
           </Link>
 
           <form className="header-search" onSubmit={search} role="search">
@@ -106,7 +106,7 @@ export function Layout() {
           <div>
             <Link to="/" className="brand light">
               <Logo />
-              <span>PottedLeaf</span>
+              <span>thePottedLeaf</span>
             </Link>
             <p className="muted-light">
               Nursery-grown plants, handcrafted pots and honest advice — delivered carefully to your door.
@@ -157,7 +157,7 @@ export function Layout() {
         </div>
         <div className="container footer-bottom">
           <span>
-            © {new Date().getFullYear()} PottedLeaf · a unit of {CONTACT.business} · GSTIN {CONTACT.gstin}
+            © {new Date().getFullYear()} thePottedLeaf · a unit of {CONTACT.business} · GSTIN {CONTACT.gstin}
           </span>
           <span>Secure payments by Razorpay · UPI · Cards</span>
         </div>

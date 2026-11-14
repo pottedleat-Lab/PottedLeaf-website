@@ -88,7 +88,7 @@ export default function Checkout() {
         order_id: order.razorpayOrderId,
         amount: order.amount,
         currency: order.currency,
-        name: 'PottedLeaf',
+        name: 'thePottedLeaf',
         description: `Order of ${items.length} item${items.length > 1 ? 's' : ''}`,
         prefill: order.customer,
         theme: { color: '#2f5d45' },

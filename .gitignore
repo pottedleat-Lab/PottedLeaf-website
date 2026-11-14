@@ -2,3 +2,4 @@ node_modules
 dist
 .env
 *.tsbuildinfo
+tests/e2e/output/

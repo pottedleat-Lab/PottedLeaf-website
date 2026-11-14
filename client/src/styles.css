@@ -1,4 +1,4 @@
-/* PottedLeaf — design tokens */
+/* thePottedLeaf — design tokens */
 :root {
   --cream: #f7f2e8;
   --cream-2: #efe7d6;
@@ -88,7 +88,7 @@ label { display: grid; gap: 0.35rem; font-size: 0.85rem; font-weight: 500; color
 .btn-ghost:hover { background: var(--sage); color: var(--forest); }
 .btn-light { background: #fff; color: var(--forest); border-color: #fff; }
 .btn-light:hover { background: var(--cream); color: var(--forest); }
-.link-btn { background: none; border: 0; padding: 0; color: var(--green); font-weight: 500; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--green); font-weight: 500; white-space: nowrap; }
 .link-btn:hover { color: var(--clay); }
 .link-btn.danger { color: var(--danger); }
 .icon-btn { background: none; border: 0; padding: 0.4rem; }
@@ -395,6 +395,8 @@ legend { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: 
   .menu-toggle { display: block; }
   .header-search { display: none; }
   .header-row { gap: 0.75rem; }
+  .site-header .brand { font-size: 1.2rem; gap: 0.35rem; }
+  .site-header .brand svg { width: 26px; height: 26px; }
   .main-nav { display: none; }
   .main-nav.open { display: block; }
   .main-nav .nav-row { flex-direction: column; padding-block: 0.5rem; }

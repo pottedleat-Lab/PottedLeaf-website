@@ -10,7 +10,7 @@ export default function Vlogs() {
       <div className="page-intro">
         <span className="eyebrow">From our nursery</span>
         <h1>Vlogs</h1>
-        <p className="muted">Plant-care walkthroughs, repotting guides and behind-the-scenes from the PottedLeaf greenhouse.</p>
+        <p className="muted">Plant-care walkthroughs, repotting guides and behind-the-scenes from thePottedLeaf greenhouse.</p>
       </div>
       {loading && <p className="muted">Loading…</p>}
       {error && <p className="error">{error}</p>}

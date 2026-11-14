@@ -1,4 +1,4 @@
-# Render Blueprint for the PottedLeaf API (server/).
+# Render Blueprint for the thePottedLeaf API (server/).
 # Render dashboard → New → Blueprint → pick this repo. Fill in the secret values when asked.
 services:
   - type: web
