@@ -11,6 +11,8 @@ interface AuthState {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ needsConfirmation: boolean }>;
+  /** Redirects to Google, then back to `redirectPath` on this site. */
+  signInWithGoogle: (redirectPath?: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -30,7 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setMe(await api.me());
     } catch {
       // backend unreachable — still treat as logged-in customer
-      setMe({ id: s.user.id, email: s.user.email, role: 'customer', fullName: s.user.user_metadata?.full_name ?? '' });
+      const meta = s.user.user_metadata ?? {};
+      setMe({ id: s.user.id, email: s.user.email, role: 'customer', fullName: meta.full_name ?? meta.name ?? '' });
     }
   }, []);
 
@@ -71,6 +74,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { needsConfirmation: !data.session };
   };
 
+  const signInWithGoogle = async (redirectPath = '/') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // Come back via /login so errors are shown there; on success it forwards to redirectPath
+        redirectTo: `${window.location.origin}/login?redirect=${encodeURIComponent(redirectPath)}`,
+        queryParams: { prompt: 'select_account' }, // let people pick which Google account
+      },
+    });
+    if (error) throw error;
+    // the browser now navigates to Google; on return, onAuthStateChange fires SIGNED_IN
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
@@ -78,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ session, me, isAdmin: me?.role === 'admin', loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, me, isAdmin: me?.role === 'admin', loading, signIn, signUp, signInWithGoogle, signOut }}>
       {children}
     </AuthContext.Provider>
   );

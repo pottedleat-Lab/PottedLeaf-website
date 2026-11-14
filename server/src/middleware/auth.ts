@@ -35,7 +35,11 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     id: data.user.id,
     email: data.user.email,
     role: profile?.role === 'admin' ? 'admin' : 'customer',
-    fullName: profile?.full_name || (data.user.user_metadata?.full_name as string) || '',
+    fullName:
+      profile?.full_name ||
+      (data.user.user_metadata?.full_name as string) ||
+      (data.user.user_metadata?.name as string) || // Google
+      '',
   };
   next();
 }

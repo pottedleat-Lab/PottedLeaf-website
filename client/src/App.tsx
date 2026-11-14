@@ -13,6 +13,7 @@ import FeedbackPage from './pages/Feedback';
 import Gallery from './pages/Gallery';
 import About from './pages/About';
 import { Login, NotFound, Signup } from './pages/Auth';
+import { Contact, Privacy, RefundPolicy, ShippingPolicy, Terms } from './pages/Policies';
 import AdminLayout from './pages/admin/AdminLayout';
 import AddProduct from './pages/admin/AddProduct';
 import Inventory from './pages/admin/Inventory';
@@ -34,6 +35,11 @@ export default function App() {
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="terms" element={<Terms />} />
+        <Route path="privacy" element={<Privacy />} />
+        <Route path="refund-policy" element={<RefundPolicy />} />
+        <Route path="shipping-policy" element={<ShippingPolicy />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
 

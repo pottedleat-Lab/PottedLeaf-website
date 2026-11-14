@@ -27,12 +27,20 @@ export default function About() {
       </div>
       <h2>Contact us</h2>
       <ul className="plain-list">
-        <li>👤 {CONTACT.name}</li>
+        <li>
+          🏢 <strong>{CONTACT.business}</strong> (C/O {CONTACT.name})
+        </li>
         <li>
           📧 <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
         </li>
         <li>
-          📞 <a href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a>
+          📞{' '}
+          {CONTACT.phones.map((p, i) => (
+            <span key={p.href}>
+              {i > 0 && ' · '}
+              <a href={`tel:${p.href}`}>{p.label}</a>
+            </span>
+          ))}
         </li>
         <li>
           📍{' '}
@@ -40,6 +48,7 @@ export default function About() {
             {CONTACT.address}
           </a>
         </li>
+        <li>🧾 GSTIN: {CONTACT.gstin}</li>
       </ul>
     </div>
   );

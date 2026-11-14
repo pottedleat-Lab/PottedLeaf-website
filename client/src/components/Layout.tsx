@@ -112,9 +112,14 @@ export function Layout() {
               Nursery-grown plants, handcrafted pots and honest advice — delivered carefully to your door.
             </p>
             <address className="footer-contact">
-              {CONTACT.name}
+              <strong>{CONTACT.business}</strong>
+              <span>C/O {CONTACT.name}</span>
               <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-              <a href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a>
+              {CONTACT.phones.map((p) => (
+                <a key={p.href} href={`tel:${p.href}`}>
+                  {p.label}
+                </a>
+              ))}
               <a href={MAPS_URL} target="_blank" rel="noreferrer">
                 {CONTACT.address}
               </a>
@@ -139,11 +144,21 @@ export function Layout() {
             <Link to="/vlogs">Vlogs</Link>
             <Link to="/gallery">Gallery</Link>
             <Link to="/feedback">Customer feedback</Link>
-            <Link to="/about">About & contact</Link>
+            <Link to="/about">About us</Link>
+            <Link to="/contact">Contact us</Link>
+          </div>
+          <div>
+            <h4>Policies</h4>
+            <Link to="/terms">Terms & Conditions</Link>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/refund-policy">Refund & Cancellation</Link>
+            <Link to="/shipping-policy">Shipping & Delivery</Link>
           </div>
         </div>
         <div className="container footer-bottom">
-          <span>© {new Date().getFullYear()} PottedLeaf</span>
+          <span>
+            © {new Date().getFullYear()} PottedLeaf · a unit of {CONTACT.business} · GSTIN {CONTACT.gstin}
+          </span>
           <span>Secure payments by Razorpay · UPI · Cards</span>
         </div>
       </footer>

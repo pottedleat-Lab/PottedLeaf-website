@@ -39,7 +39,21 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-### 5. Admin account
+### 5. Google login
+1. **Google Cloud Console** (https://console.cloud.google.com) → create/select a project.
+2. **APIs & Services → OAuth consent screen**: User type *External*, app name "PottedLeaf", support email, and add your domain later. Publish the app when going live (in *Testing* only listed test users can sign in).
+3. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type *Web application*:
+   - Authorized JavaScript origins: `http://localhost:5173` (add your Vercel URL later)
+   - Authorized redirect URIs: `https://<your-project-ref>.supabase.co/auth/v1/callback`
+   - Copy the **Client ID** and **Client secret**.
+4. **Supabase → Authentication → Sign In / Providers → Google**: enable, paste Client ID + secret, save.
+5. **Supabase → Authentication → URL Configuration**:
+   - Site URL: `http://localhost:5173` (change to the Vercel URL when deployed)
+   - Redirect URLs: add `http://localhost:5173/**` and, after deploying, `https://<your-vercel-url>/**`
+
+The Google email `thepottedleafs@gmail.com` also gets admin automatically. If the same email already has a password account, Supabase links both logins to one account.
+
+### 6. Admin account
 **thepottedleafs@gmail.com** is the admin. `schema.sql` lists it in the `admin_emails` table, so:
 - if that email signs up after the schema is run, it becomes admin automatically;
 - if it already had an account, running the schema upgrades it to admin.

@@ -127,7 +127,12 @@ label { display: grid; gap: 0.35rem; font-size: 0.85rem; font-weight: 500; color
 
 /* Footer */
 .site-footer { background: var(--forest); color: #dfe8e1; margin-top: 3rem; }
-.footer-grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 2rem; padding-block: 3rem 2rem; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 2rem; padding-block: 3rem 2rem; }
+.policy h3 { margin-top: 1.6rem; }
+.policy ul { padding-left: 1.2rem; display: grid; gap: 0.4rem; }
+.policy ul.plain-list { padding-left: 0; }
+.policy hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0 1rem; }
+.policy-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; font-size: 0.9rem; }
 .footer-grid h4 { color: #fff; font-family: var(--sans); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .footer-grid a:not(.brand) { display: block; color: #c4d4c8; padding: 0.2rem 0; font-size: 0.92rem; }
 .footer-grid a:hover { color: #fff; }
@@ -320,6 +325,10 @@ legend { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: 
 .auth-page { min-height: 70vh; display: grid; place-items: center; padding: 2rem 16px; }
 .auth-card { width: min(420px, 100%); background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 2rem; display: grid; gap: 1rem; box-shadow: var(--shadow); }
 .auth-card h1 { font-size: 1.7rem; margin: 0; }
+.btn-google { background: #fff; color: var(--ink); border-color: var(--line); gap: 0.6rem; }
+.btn-google:hover { background: var(--cream); color: var(--ink); }
+.auth-divider { display: flex; align-items: center; gap: 0.75rem; color: var(--muted); font-size: 0.8rem; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 
 /* Admin */
 .admin-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; }

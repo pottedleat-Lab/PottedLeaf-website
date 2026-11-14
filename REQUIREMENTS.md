@@ -13,7 +13,7 @@ An online store for plants, pots and gardening tools. Multi-page web app with cu
 | Frontend | React 18 + TypeScript, Vite, React Router (multi-page routing) |
 | Backend | Node.js + **TypeScript**, Express |
 | Database | Supabase Postgres (with Row Level Security) |
-| Auth | Supabase Auth (email + password) |
+| Auth | Supabase Auth: **Continue with Google** + email/password |
 | File storage | Supabase Storage (`product-images`, `gallery` buckets) |
 | Payments | Razorpay (UPI QR, Credit Card, Debit Card) |
 
@@ -50,11 +50,24 @@ The frontend uses Supabase **only for login/signup**. All data reads and writes 
 | `/vlogs` | Vlogs — video posts (YouTube) with title and description | Public |
 | `/feedback` | Customer feedback wall + form to submit feedback (rating 1–5 + message) | View public, submit requires login |
 | `/gallery` | Photo gallery uploaded by admin | Public |
-| `/about` | About the business & contact info (Shalini Gupta · thepottedleafs@gmail.com · +91 98385 06070 · Labour Colony, Dada Nagar, Kanpur, Uttar Pradesh, India; also shown in the footer) | Public |
+| `/about` | About the business & contact info (see 3.1; also shown in the footer) | Public |
+| `/contact` | Contact us | Public |
+| `/terms`, `/privacy`, `/refund-policy`, `/shipping-policy` | Policy pages (required for Razorpay website verification), linked in the footer | Public |
 | `/login`, `/signup` | Auth | Public |
 | `/admin` | Admin dashboard (tabs below) | **Admin only** |
 
-### 3.1 Product categories (sections)
+### 3.1 Business & contact details
+Shown on the About page and in the site footer (edit in `client/src/lib/contact.ts`):
+
+| | |
+|---|---|
+| Business | VM Botanicals (C/O Shalini Gupta) |
+| GSTIN | 09BAUPG4039G2ZE |
+| Address | 9/10 White Colony, Dada Nagar, Kanpur, Uttar Pradesh 208022, India |
+| Phone | +91 98895 06070 · +91 87954 64248 |
+| Email | thepottedleafs@gmail.com |
+
+### 3.2 Product categories (sections)
 
 Products are listed section-wise:
 

@@ -27,7 +27,7 @@ begin
   insert into public.profiles (id, full_name, role)
   values (
     new.id,
-    coalesce(new.raw_user_meta_data->>'full_name', ''),
+    coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', ''),
     case when exists (select 1 from public.admin_emails where lower(email) = lower(new.email))
          then 'admin' else 'customer' end
   )
@@ -43,7 +43,7 @@ create trigger on_auth_user_created
 
 -- If an admin email already has an account, upgrade it now
 insert into public.profiles (id, full_name, role)
-select u.id, coalesce(u.raw_user_meta_data->>'full_name', ''), 'admin'
+select u.id, coalesce(u.raw_user_meta_data->>'full_name', u.raw_user_meta_data->>'name', ''), 'admin'
 from auth.users u
 join public.admin_emails a on lower(a.email) = lower(u.email)
 on conflict (id) do update set role = 'admin';
