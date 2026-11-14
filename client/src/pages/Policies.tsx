@@ -103,7 +103,11 @@ export function Privacy() {
         your personal data.
       </p>
       <h3>Cookies & storage</h3>
-      <p>We use your browser's storage to keep you logged in and remember your cart. We do not use advertising cookies.</p>
+      <p>
+        We use your browser's storage to keep you logged in and remember your cart. We use Vercel Web Analytics to count
+        visits and page views anonymously; it does not use cookies or identify you personally. We do not use advertising
+        cookies.
+      </p>
       <h3>Your choices</h3>
       <p>
         You can ask us to view, correct or delete your personal data by emailing{' '}
